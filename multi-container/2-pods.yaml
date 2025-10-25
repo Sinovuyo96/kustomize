@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    id: very-important
+    app: ngninx
+  name: ngninx
+  namespace: argocd
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: ngninx
+  template:
+    metadata:
+      labels:
+        app: ngninx
+    spec:
+      serviceAccountName: kustomization
+      containers:
+      - image: nginx:alpine
+        name: nginx-2
+        ports:
+        - containerPort: 8080
+        command: ["/bin/sh", "-c"]
+        args: ["curl -vv http://172.19.0.2:30897"]
+      - image: nginx:alpine
+        name: nginx
+        ports:
+        - containerPort: 80
+      affinity:   # 👈 move this here (same level as containers)
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: id
+                operator: In
+                values:
+                - very-important
+            topologyKey: kubernetes.io/hostname

@@ -1,0 +1,13 @@
+# root kustomize for all the microservices
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- api/
+- cache/
+- db/
+namespace: microservices
+nameSuffix: -dev
+labels:
+- includeSelectors: true
+  pairs:
+    built-by: cloud-engineer

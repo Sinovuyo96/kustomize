@@ -1,0 +1,25 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - nginx.yaml
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        labels:
+          app: ngninx
+        name: ngninx
+        namespace: argocd
+      spec:
+        replicas: 1
+        template:
+          spec:
+            containers:
+            - image: httpd:alpine
+              name: httd
+              ports:
+              - containerPort: 8080

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: safari-deployment
+  name: safari-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safari-deployment
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: safari-deployment
+    spec:
+      volumes:
+      - name: task-pv-storage
+        persistentVolumeClaim:
+          claimName: task-pv-claim
+      containers:
+      - image: nginx
+        name: nginx
+        volumeMounts:
+        - mountPath: "/tmp/safari-data"
+          name: task-pv-storage
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
