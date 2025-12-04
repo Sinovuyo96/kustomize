@@ -1,6 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - nginx-deployment.yaml
   - api.yaml
   - svc.yaml
 
@@ -20,7 +21,6 @@ patches:
       apiVersion: v1
       kind: Service
       metadata:
-        creationTimestamp: null
         labels:
           app: api-svc
         name: svc
@@ -30,10 +30,6 @@ patches:
           port: 8080
           protocol: TCP
           targetPort: 80
-        - name: https-port
-          port: 443
-          protocol: TCP
-          targetPort: 8080
         selector:
-          app: api-svc
+          app: nginx-hello
         type: ClusterIP

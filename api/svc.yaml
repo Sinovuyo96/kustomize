@@ -1,18 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: null
-  labels:
-    app: api-svc
   name: svc
 spec:
-  ports:
-  - name: 8080-80
-    port: 8080
-    protocol: TCP
-    targetPort: 80
   selector:
-    app: api-svc
+    app: nginx-hello
+  ports:
+    - name: 8080-80
+      port: 8080
+      targetPort: 80
+      protocol: TCP
   type: ClusterIP
-status:
-  loadBalancer: {}
